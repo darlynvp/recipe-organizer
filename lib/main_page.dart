@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+//run with workspace
+//run with simulator
+//terminal: open -a Simulator then flutter run
+
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
 
