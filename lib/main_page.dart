@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'add_recipe_page.dart';
+import 'data.dart';
+
 //run with workspace
 //run with simulator
 //terminal: open -a Simulator then flutter run
@@ -15,13 +18,6 @@ class _MainPageState extends State<MainPage> {
   int _selectedChip = 0;
   int _selectedNav = 0;
   final TextEditingController _searchController = TextEditingController();
-
-  final List<String> chips = ['Favorites', 'Breakfast', 'Lunch', 'Dinner']; //the different tabs for types of recipes to look for
-  
-  //recipes that are there and would be added after
-  final List<Map<String, String>> recipes = [
-   {'name': 'Spaghetti', 'category': 'Dinner', 'image': 'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=300'},
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -251,18 +247,21 @@ class _MainPageState extends State<MainPage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _buildNavItem(Icons.home, 0),
-          _buildNavItem(Icons.add_circle_outline, 1),
-          _buildNavItem(Icons.person_outline, 2),
+          _buildNavItem(Icons.home, const MainPage(), 0),
+          _buildNavItem(Icons.add_circle_outline, const AddRecipePage(), 1),
+          _buildNavItem(Icons.person_outline, const MainPage(), 2),
         ],
       ),
     );
   }
 
-  Widget _buildNavItem(IconData icon, int index) {
+  Widget _buildNavItem(IconData icon, Widget page, int index) {
     final isSelected = _selectedNav == index;
     return GestureDetector(
-      onTap: () => setState(() => _selectedNav = index),
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => page));
+        
+      },
       child: Icon(
         icon,
         size: 28,
@@ -276,4 +275,5 @@ class _MainPageState extends State<MainPage> {
     _searchController.dispose();
     super.dispose();
   }
+
 }

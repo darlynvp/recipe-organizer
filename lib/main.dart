@@ -4,6 +4,7 @@ import 'package:recipeorganizer/main_page.dart';
 void main() {
   runApp(const RecipeApp());
 }
+
 class RecipeApp extends StatelessWidget {
   const RecipeApp({Key? key}) : super(key: key);
 
