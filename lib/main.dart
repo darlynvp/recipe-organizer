@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:recipeorganizer/main_page.dart';
+import 'package:recipeorganizer/recipe_manager.dart';
 
 void main() {
-  runApp(const RecipeApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => RecipeManager(),
+      child: RecipeApp()
+      ),
+  );
 }
 
 class RecipeApp extends StatelessWidget {

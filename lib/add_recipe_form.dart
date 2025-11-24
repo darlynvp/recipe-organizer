@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import 'package:recipeorganizer/recipe.dart';
+import 'package:recipeorganizer/recipe_manager.dart';
 
 import 'data.dart';
 
@@ -12,6 +15,12 @@ class AddRecipeForm extends StatefulWidget {
 }
 
 class _AddRecipeFormState extends State<AddRecipeForm> {
+
+  final TextEditingController nameC = TextEditingController();
+  final TextEditingController servingsC = TextEditingController();
+  final TextEditingController cookTimeC = TextEditingController();
+  final TextEditingController instructionsC = TextEditingController();
+
 
   final _formKey = GlobalKey<FormState>();
   String? _selectedValue = chips[0];
@@ -28,8 +37,10 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
           child: Form(
             key: _formKey,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                TextFormField(                  // Recipe name input
+                TextFormField(  
+                  controller: nameC,                // Recipe name input
                   decoration: const InputDecoration(
                     labelText: 'Recipe Name',
                   ),
@@ -40,6 +51,7 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
                     return null;
                   },
                 ),
+                Divider(height: 32),
                 DropdownButtonFormField(        // Category selection
                   initialValue: _selectedValue,
                   items: chips.map((option) => DropdownMenuItem(
@@ -52,7 +64,9 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
                     });
                   },
                 ),
-                TextFormField(                // Serving size input
+                Divider(height: 32),
+                TextFormField(   
+                  controller: servingsC,             // Serving size input
                   decoration: const InputDecoration(
                     labelText: 'Serving Size',
                   ),
@@ -67,6 +81,14 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
                     return null;
                   },
                 ),
+                Divider(height: 32),
+                TextFormField(
+                  controller: cookTimeC,
+                  decoration: const InputDecoration(
+                    labelText: 'Prep/Cook time'
+                  ),
+                ),
+                Divider(height: 32),
                 Container(
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(0, 10.0, 0, 0),
@@ -119,12 +141,39 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
                     ),
                   ),
                 ),
+                Divider(height: 32),
+                const Text(
+                  'Instructions',
+                  style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  ),
+                ),
+                  TextFormField(
+                    controller: instructionsC,
+                    decoration: const InputDecoration(
+                      hintText: 'Enter the instructions of recipe',
+                    ),
+                    maxLines: 4,
+                  ),
+                  SizedBox(height: 24),
+                
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         // Process data
+                        final newRecipe = Recipe(
+                          name: nameC.text,
+                          type: _selectedValue ?? '',
+                          servings: servingsC.text,
+                          cookTime: cookTimeC.text,
+                          ingredients: ingredients,
+                          instructions: instructionsC.text,
+                        );
+                        Provider.of<RecipeManager>(context, listen:false).addRecipe(newRecipe);
+                        Navigator.pop(context);
                       }
                     },
                     child: const Text('Submit'),
@@ -138,18 +187,46 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
     );
   }
 
+@override
+void dispose(){
+  nameC.dispose();
+  servingsC.dispose();
+  cookTimeC.dispose();
+  instructionsC.dispose();
+  super.dispose();
 }
 
+}
+
+
+
 class IngredientInput extends StatefulWidget {
-  const IngredientInput({Key? key, required this.ingredient, required this.onDelete}) : super(key: key);
   final Ingredient ingredient;
   final VoidCallback onDelete;
+  const IngredientInput({Key? key, required this.ingredient, required this.onDelete}) : super(key: key);
 
   @override
   State<IngredientInput> createState() => _IngredientInputState();
 } 
 
 class _IngredientInputState extends State<IngredientInput> {
+  late TextEditingController nameController;
+  late TextEditingController quantityController;
+
+  @override
+  void initState(){
+    super.initState();
+    nameController = TextEditingController(text: widget.ingredient.name);
+    quantityController = TextEditingController(text:widget.ingredient.quantity);
+  }
+
+  @override
+  void dispose(){
+    nameController.dispose();
+    quantityController.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -157,6 +234,7 @@ class _IngredientInputState extends State<IngredientInput> {
       children: [
         Expanded(
           child: TextFormField(
+            controller: nameController,
             decoration: const InputDecoration(
               labelText: 'Ingredient Name',
             ),
@@ -166,11 +244,13 @@ class _IngredientInputState extends State<IngredientInput> {
               }
               return null;
             },
+            onChanged: (value) => widget.ingredient.name = value,
           ),
         ),
         const SizedBox(width: 10),
         Expanded(
           child: TextFormField(
+            controller: quantityController,
             decoration: const InputDecoration(
               labelText: 'Quantity',
             ),
@@ -180,17 +260,11 @@ class _IngredientInputState extends State<IngredientInput> {
               }
               return null;
             },
+            onChanged: (value) => widget.ingredient.quantity = value,
           ),
         ),
         IconButton(onPressed: widget.onDelete, icon: Icon(Icons.delete))
       ],
     );
   }
-}
-
-class Ingredient {
-  String name;
-  String quantity;
-
-  Ingredient({required this.name, required this.quantity});
 }

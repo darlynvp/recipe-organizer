@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:recipeorganizer/recipe_manager.dart';
 
 import 'add_recipe_page.dart';
 import 'data.dart';
-
-//run with workspace
-//run with simulator
-//terminal: open -a Simulator then flutter run
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -54,15 +52,15 @@ class _MainPageState extends State<MainPage> {
   }
 
   Widget _buildHeader() {
-  return const Text(
-    'Welcome!',
-    style: TextStyle(
-      fontSize: 24,
-      fontWeight: FontWeight.bold,
-      color: Color(0xFF626C71),
-    ),
-  );
-}
+    return const Text(
+      'Welcome!',
+      style: TextStyle(
+        fontSize: 24,
+        fontWeight: FontWeight.bold,
+        color: Color(0xFF626C71),
+      ),
+    );
+  }
 
   Widget _buildSearchBar() {
     return TextField(
@@ -141,7 +139,9 @@ class _MainPageState extends State<MainPage> {
           style: BorderStyle.solid,
         ),
         image: const DecorationImage(
-          image: NetworkImage('https://img.freepik.com/free-vector/cartoon-style-recipe-note-with-ingredients_52683-79718.jpg?semt=ais_hybrid&w=740&q=80'),
+          image: NetworkImage(
+            'https://img.freepik.com/free-vector/cartoon-style-recipe-note-with-ingredients_52683-79718.jpg?semt=ais_hybrid&w=740&q=80',
+          ),
           fit: BoxFit.cover,
         ),
       ),
@@ -189,46 +189,48 @@ class _MainPageState extends State<MainPage> {
   Widget _buildRecipeGrid() {
     return SizedBox(
       height: 200,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: recipes.length,
-        itemBuilder: (context, index) {
-          final recipe = recipes[index];
-          return Container(
-            width: 140,
-            margin: const EdgeInsets.only(right: 12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  height: 140,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    image: DecorationImage(
-                      image: NetworkImage(recipe['image']!),
-                      fit: BoxFit.cover,
+      child: Consumer<RecipeManager>(
+        builder: (context, manager, child) {
+          return ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: manager.recipes.length,
+            itemBuilder: (context, index) {
+              final recipe = manager.recipes[index];
+              return Container(
+                width: 140,
+                margin: const EdgeInsets.only(right: 12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      height: 140,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: Colors.grey[200],
+                      ),
+                      child: Center(child: Text(recipe.name)),
                     ),
-                  ),
+                    const SizedBox(height: 8),
+                    Text(
+                      recipe.type,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: Color(0xFF626C71),
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      recipe.name,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xFF134252),
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 8),
-                Text(
-                  recipe['category']!,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: Color(0xFF626C71),
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  recipe['name']!,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFF134252),
-                  ),
-                ),
-              ],
-            ),
+              );
+            },
           );
         },
       ),
@@ -239,7 +241,7 @@ class _MainPageState extends State<MainPage> {
     return Container(
       height: 80,
       decoration: BoxDecoration(
-        color: Color(0xFF21808D),
+        color: const Color(0xFF21808D),
         border: Border(
           top: BorderSide(color: Colors.grey.withOpacity(0.2)),
         ),
@@ -247,25 +249,32 @@ class _MainPageState extends State<MainPage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _buildNavItem(Icons.home, const MainPage(), 0),
-          _buildNavItem(Icons.add_circle_outline, const AddRecipePage(), 1),
-          _buildNavItem(Icons.person_outline, const MainPage(), 2),
+          _buildNavItem(Icons.home, 0),
+          _buildNavItem(Icons.add_circle_outline, 1),
+          _buildNavItem(Icons.person_outline, 2),
         ],
       ),
     );
   }
 
-  Widget _buildNavItem(IconData icon, Widget page, int index) {
+  Widget _buildNavItem(IconData icon, int index) {
     final isSelected = _selectedNav == index;
+
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => page));
-        
+        if (index == 1) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const AddRecipePage()),
+          );
+        } else {
+          setState(() => _selectedNav = index);
+        }
       },
       child: Icon(
         icon,
         size: 28,
-        color: isSelected ? Color(0xFF64FFDA) : Colors.white,
+        color: isSelected ? const Color(0xFF64FFDA) : Colors.white,
       ),
     );
   }
@@ -275,5 +284,4 @@ class _MainPageState extends State<MainPage> {
     _searchController.dispose();
     super.dispose();
   }
-
 }

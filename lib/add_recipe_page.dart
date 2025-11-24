@@ -15,8 +15,9 @@ class _AddRecipePageState extends State<AddRecipePage> {
       appBar: AppBar(
         title: const Text('Add Recipe'),
       ),
-      body: const Center(
-        child: AddRecipeForm(),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: AddRecipeForm(), 
       ),
     );
   }
