@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recipeorganizer/recipe_manager.dart';
+import 'package:recipeorganizer/recipe_detail_page.dart';
 
 import 'add_recipe_page.dart';
 import 'data.dart';
@@ -186,56 +187,107 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-  Widget _buildRecipeGrid() {
-    return SizedBox(
-      height: 200,
-      child: Consumer<RecipeManager>(
-        builder: (context, manager, child) {
-          return ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: manager.recipes.length,
-            itemBuilder: (context, index) {
-              final recipe = manager.recipes[index];
-              return Container(
-                width: 140,
-                margin: const EdgeInsets.only(right: 12),
+ Widget _buildRecipeGrid() {
+  return SizedBox(
+    height: 220,
+    child: Consumer<RecipeManager>(
+      builder: (context, manager, child) {
+        return ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: manager.recipes.length,
+          itemBuilder: (context, index) {
+            final recipe = manager.recipes[index];
+
+            return InkWell(
+              borderRadius: BorderRadius.circular(18),
+              onTap: () {
+                print("Opening recipe: ${recipe.name}");
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => RecipeDetailPage(recipe: recipe),
+                  ),
+                );
+              },
+              child: Container(
+                width: 160,
+                margin: const EdgeInsets.only(right: 12,bottom: 6, top: 6),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(18),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.06),
+                      blurRadius: 6,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
-                      height: 140,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        color: Colors.grey[200],
+                    Expanded(
+                      child: Container(
+                        width: double.infinity,
+                        margin: const EdgeInsets.all(14),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[100],
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                        child: Center(
+                          child: Text(
+                            recipe.name,
+                            textAlign: TextAlign.center,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 19,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF134252),
+                            ),
+                          ),
+                        ),
                       ),
-                      child: Center(child: Text(recipe.name)),
                     ),
-                    const SizedBox(height: 8),
-                    Text(
-                      recipe.type,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: Color(0xFF626C71),
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      recipe.name,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xFF134252),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 6, left: 8, right: 8),
+                      child: Column(
+                        children: [
+                          Text(
+                            recipe.type,
+                            style: const TextStyle(
+                              fontSize: 13,
+                              color: Color(0xFF626C71),
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            recipe.name,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF134252),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
                 ),
-              );
-            },
-          );
-        },
-      ),
-    );
-  }
+              ),
+            );
+          },
+        );
+      },
+    ),
+  );
+}
+
+                      
+                      
+
 
   Widget _buildBottomNav() {
     return Container(
