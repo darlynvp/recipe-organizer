@@ -11,13 +11,25 @@ class AddRecipePage extends StatefulWidget {
 class _AddRecipePageState extends State<AddRecipePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Add Recipe'),
+    return Theme(
+      data: Theme.of(context).copyWith(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.teal,
+        ),
+        scaffoldBackgroundColor: Colors.white,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.teal,
+          foregroundColor: Colors.white,
+        ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: AddRecipeForm(), 
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Add Recipe'),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: AddRecipeForm(), 
+        ),
       ),
     );
   }
