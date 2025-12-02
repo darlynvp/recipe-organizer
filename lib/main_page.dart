@@ -5,6 +5,7 @@ import 'package:recipeorganizer/recipe_manager.dart';
 import 'package:recipeorganizer/recipe_detail_page.dart';
 
 import 'add_recipe_page.dart';
+import 'profile_page.dart';
 import 'data.dart';
 
 class MainPage extends StatefulWidget {
@@ -358,7 +359,21 @@ String get _selectedType => chips[_selectedChip];
           Navigator.push(
             context,
             MaterialPageRoute(builder: (_) => const AddRecipePage()),
+          ).then(
+            (_) => setState(() {
+              _selectedNav = 0;
+            }),
           );
+        } else if (index == 2) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const ProfilePage()),
+          ).then(
+            (_) => setState(() {
+              _selectedNav = 0;
+            }),
+          );
+          index = 0;
         } else {
           setState(() => _selectedNav = index);
         }
