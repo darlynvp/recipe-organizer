@@ -15,6 +15,7 @@ class Recipe{
   final String cookTime;
   final String instructions;
   final List<Ingredient> ingredients;
+  bool isFavorite;
 
   Recipe({
 
@@ -24,6 +25,7 @@ class Recipe{
     required this.cookTime,
     required this.instructions,
     required this.ingredients,
+    this.isFavorite = false,
   });
 
 }

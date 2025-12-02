@@ -17,4 +17,9 @@ class RecipeManager extends ChangeNotifier{
     notifyListeners();
   }
 
+  void toggleFavorite(Recipe recipe){
+    recipe.isFavorite = !recipe.isFavorite;
+    notifyListeners();
+  }
+
 }

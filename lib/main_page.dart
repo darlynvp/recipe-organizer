@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:recipeorganizer/recipe.dart';
 import 'package:recipeorganizer/recipe_manager.dart';
 import 'package:recipeorganizer/recipe_detail_page.dart';
 
@@ -18,6 +19,28 @@ class _MainPageState extends State<MainPage> {
   int _selectedNav = 0;
   final TextEditingController _searchController = TextEditingController();
 
+  bool get _isSearchActive =>
+    _searchController.text.trim().isNotEmpty;
+
+String get _selectedType => chips[_selectedChip]; 
+
+  bool _matchSearch(Recipe recipe) {
+    final query = _searchController.text.trim().toLowerCase();
+    if (query.isEmpty) return true;
+    return recipe.name.toLowerCase().contains(query);
+  }
+  bool _matchType(Recipe recipe) {
+    final type = _selectedType;
+
+    if (type == "All") return true;
+     
+    if(type == 'Favorites'){
+      return recipe.isFavorite == true;
+    }
+
+    return recipe.type == type;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,6 +57,8 @@ class _MainPageState extends State<MainPage> {
                     const SizedBox(height: 20),
                     _buildSearchBar(),
                     const SizedBox(height: 16),
+                    _buildSearchResults(),
+                    const SizedBox(height: 8),
                     _buildFilterChips(),
                     const SizedBox(height: 20),
                     _buildFeaturedSection(),
@@ -66,6 +91,9 @@ class _MainPageState extends State<MainPage> {
   Widget _buildSearchBar() {
     return TextField(
       controller: _searchController,
+      onChanged: (value) {
+        setState(() {}); 
+      },
       decoration: InputDecoration(
         hintText: 'Search recipe',
         hintStyle: const TextStyle(color: Color(0xFF626C71)),
@@ -102,11 +130,12 @@ class _MainPageState extends State<MainPage> {
               label: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  if (index == 0) const Text('❤️ '),
+                  if (chips[index]== 'Favorites') const Text('❤️ '),
                   Text(chips[index]),
                 ],
               ),
               selected: isActive,
+              // rebuild when chip changes
               onSelected: (selected) {
                 setState(() => _selectedChip = index);
               },
@@ -118,7 +147,9 @@ class _MainPageState extends State<MainPage> {
                 fontSize: 12,
               ),
               side: BorderSide(
-                color: isActive ? const Color(0xFF21808D) : Colors.grey.withOpacity(0.3),
+                color: isActive
+                    ? const Color(0xFF21808D)
+                    : Colors.grey.withOpacity(0.3),
               ),
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             ),
@@ -151,20 +182,16 @@ class _MainPageState extends State<MainPage> {
           borderRadius: BorderRadius.circular(10),
           color: Colors.black.withOpacity(0.3),
         ),
-        child: const Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(height: 12),
-            Text(
-              'Recipe\nArchive',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
+        child: const Center(
+          child: Text(
+            'Recipe\nArchive',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
             ),
-          ],
+          ),
         ),
       ),
     );
@@ -182,21 +209,37 @@ class _MainPageState extends State<MainPage> {
             color: Color(0xFF134252),
           ),
         ),
-        Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
+        const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
       ],
     );
   }
 
- Widget _buildRecipeGrid() {
+  Widget _buildRecipeGrid() {
   return SizedBox(
     height: 220,
     child: Consumer<RecipeManager>(
       builder: (context, manager, child) {
+        final allRecipes = manager.recipes;
+
+        // If user is typing, show only search matches (override chips)
+        final filtered = _isSearchActive
+            ? allRecipes.where(_matchSearch).toList()
+            : allRecipes.where((r) => _matchSearch(r) && _matchType(r)).toList();
+
+        if (filtered.isEmpty) {
+          return const Center(
+            child: Text(
+              'No recipes found',
+              style: TextStyle(color: Color(0xFF626C71)),
+            ),
+          );
+        }
+
         return ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: manager.recipes.length,
+          itemCount: filtered.length,
           itemBuilder: (context, index) {
-            final recipe = manager.recipes[index];
+            final recipe = filtered[index];
 
             return InkWell(
               borderRadius: BorderRadius.circular(18),
@@ -211,7 +254,8 @@ class _MainPageState extends State<MainPage> {
               },
               child: Container(
                 width: 160,
-                margin: const EdgeInsets.only(right: 12,bottom: 6, top: 6),
+                margin:
+                    const EdgeInsets.only(right: 12, bottom: 6, top: 6),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(18),
@@ -224,7 +268,6 @@ class _MainPageState extends State<MainPage> {
                   ],
                 ),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Expanded(
                       child: Container(
@@ -250,7 +293,8 @@ class _MainPageState extends State<MainPage> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(bottom: 6, left: 8, right: 8),
+                      padding: const EdgeInsets.only(
+                          bottom: 6, left: 8, right: 8),
                       child: Column(
                         children: [
                           Text(
@@ -284,10 +328,6 @@ class _MainPageState extends State<MainPage> {
     ),
   );
 }
-
-                      
-                      
-
 
   Widget _buildBottomNav() {
     return Container(
@@ -330,6 +370,62 @@ class _MainPageState extends State<MainPage> {
       ),
     );
   }
+
+  Widget _buildSearchResults() {
+    if(!_isSearchActive) return const SizedBox.shrink();
+
+    return Consumer<RecipeManager>(
+      builder: (context, manager,child){
+        final matches = manager.recipes
+            .where(_matchSearch)
+            .take(5)
+            .toList();
+
+        if (matches.isEmpty){
+          return const SizedBox.shrink();
+        }
+
+        return Container(
+          constraints: const BoxConstraints(maxHeight: 200),
+          margin: const EdgeInsets.only(top: 4),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.08),
+                blurRadius: 6,
+                offset: const Offset(0, 3),
+              ),
+            ],
+          ),
+          child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: matches.length,
+            itemBuilder: (context,index){
+              final recipe = matches[index];
+              return ListTile(
+                title: Text(recipe.name),
+                subtitle: Text(recipe.type),
+                onTap: (){
+                  _searchController.text = recipe.name;
+                  FocusScope.of(context).unfocus();
+                  setState(() { });
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => RecipeDetailPage(recipe: recipe),
+                    ),
+                  );
+                },
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+    
 
   @override
   void dispose() {

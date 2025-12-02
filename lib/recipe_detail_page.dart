@@ -116,7 +116,7 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> with SingleTickerPr
         child: Card(
           color: Colors.white,
           elevation: 3,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(18)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical:32, horizontal: 24 ),
             child: Column(
@@ -202,7 +202,7 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> with SingleTickerPr
           margin: const EdgeInsets.symmetric(vertical: 8),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           child: CheckboxListTile(
-            value: false, 
+            value: ingredientChecks[i], 
             onChanged: (checked){
               setState(() => ingredientChecks[i] = checked ?? false);
             },
