@@ -1,4 +1,4 @@
-final List<String> chips = ['Favorites', 'Breakfast', 'Lunch', 'Dinner']; //the different tabs for types of recipes to look for
+final List<String> chips = ['All','Favorites', 'Breakfast', 'Lunch', 'Dinner']; //the different tabs for types of recipes to look for
 
   //recipes that are there and would be added after
   final List<Map<String, String>> recipes = [
