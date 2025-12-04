@@ -6,6 +6,7 @@ import 'package:recipeorganizer/recipe.dart';
 import 'package:recipeorganizer/recipe_manager.dart';
 
 import 'data.dart';
+import 'managers/type_manager.dart';
 
 class AddRecipeForm extends StatefulWidget {
   const AddRecipeForm({Key? key, this.recipe}) : super(key: key);
@@ -23,6 +24,7 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
   late TextEditingController cookTimeC;
   late TextEditingController instructionsC;
   late List<Ingredient> ingredients;
+  late List<String> chips;
 
   @override
   void initState() {
@@ -45,10 +47,12 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
   }
 
   final _formKey = GlobalKey<FormState>();
-  String? _selectedValue = chips[0];
+  String? _selectedValue;
 
   @override
   Widget build(BuildContext context) {
+
+    chips = context.watch<TypeManager>().types;
 
     return Theme(
       data: Theme.of(context).copyWith(
@@ -104,7 +108,7 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
                     decoration: const InputDecoration(
                       labelText: 'Category',
                     ),
-                    initialValue: _selectedValue,
+                    initialValue: _selectedValue ?? chips[0],
                     items: chips.map((option) => DropdownMenuItem(
                       value: option,
                       child: Text(option),

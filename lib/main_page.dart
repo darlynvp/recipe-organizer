@@ -8,6 +8,7 @@ import 'add_recipe_page.dart';
 import 'profile_page.dart';
 import 'data.dart';
 import 'recipe_list_page.dart';
+import 'managers/type_manager.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -20,6 +21,7 @@ class _MainPageState extends State<MainPage> {
   int _selectedChip = 0;
   int _selectedNav = 0;
   final TextEditingController _searchController = TextEditingController();
+  late List<String> chips;
 
   bool get _isSearchActive =>
     _searchController.text.trim().isNotEmpty;
@@ -45,6 +47,9 @@ String get _selectedType => chips[_selectedChip];
 
   @override
   Widget build(BuildContext context) {
+
+    chips = context.watch<TypeManager>().types;
+
     return Scaffold(
       body: SafeArea(
         child: Column(

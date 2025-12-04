@@ -2,13 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recipeorganizer/main_page.dart';
 import 'package:recipeorganizer/recipe_manager.dart';
+import 'package:recipeorganizer/managers/type_manager.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => RecipeManager(),
-      child: RecipeApp()
-      ),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => RecipeManager(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => TypeManager(),
+        ),
+      ],
+      child: RecipeApp(),
+    )
   );
 }
 
