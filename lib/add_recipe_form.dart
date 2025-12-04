@@ -8,7 +8,9 @@ import 'package:recipeorganizer/recipe_manager.dart';
 import 'data.dart';
 
 class AddRecipeForm extends StatefulWidget {
-  const AddRecipeForm({Key? key}) : super(key: key);
+  const AddRecipeForm({Key? key, this.recipe}) : super(key: key);
+
+  final Recipe? recipe;
 
   @override
   State<AddRecipeForm> createState() => _AddRecipeFormState();
@@ -16,15 +18,34 @@ class AddRecipeForm extends StatefulWidget {
 
 class _AddRecipeFormState extends State<AddRecipeForm> {
 
-  final TextEditingController nameC = TextEditingController();
-  final TextEditingController servingsC = TextEditingController();
-  final TextEditingController cookTimeC = TextEditingController();
-  final TextEditingController instructionsC = TextEditingController();
+  late TextEditingController nameC;
+  late TextEditingController servingsC;
+  late TextEditingController cookTimeC;
+  late TextEditingController instructionsC;
+  late List<Ingredient> ingredients;
+
+  @override
+  void initState() {
+    super.initState();
+    nameC = TextEditingController(text: widget.recipe?.name ?? '');
+    servingsC = TextEditingController(text: widget.recipe?.servings ?? '');
+    cookTimeC = TextEditingController(text: widget.recipe?.cookTime ?? '');
+    instructionsC = TextEditingController(text: widget.recipe?.instructions ?? '');
+    
+    if (widget.recipe != null) {
+      ingredients = widget.recipe!.ingredients
+          .map((ingredient) => Ingredient(
+                name: ingredient.name,
+                quantity: ingredient.quantity,
+              ))
+          .toList();
+    } else {
+      ingredients = [Ingredient(name: '', quantity: '')];
+    }
+  }
 
   final _formKey = GlobalKey<FormState>();
   String? _selectedValue = chips[0];
-  List<Ingredient> ingredients = [Ingredient(name: '', quantity: '')];
-
 
   @override
   Widget build(BuildContext context) {
@@ -188,9 +209,31 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
                       maxLines: 4,
                     ),
                     SizedBox(height: 24),
-      
                   
-                  Padding(
+                  if (widget.recipe != null) ...[
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            // Process data
+                            final newRecipe = Recipe(
+                              name: nameC.text,
+                              type: _selectedValue ?? '',
+                              servings: servingsC.text,
+                              cookTime: cookTimeC.text,
+                              ingredients: ingredients,
+                              instructions: instructionsC.text,
+                            );
+                            Provider.of<RecipeManager>(context, listen:false).changeRecipe(widget.recipe!, newRecipe);
+                            Navigator.pop(context);
+                          }
+                        },
+                        child: const Text('Save'),
+                      ),
+                    )
+                  ] else ...[
+                    Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: ElevatedButton(
                       onPressed: () {
@@ -208,9 +251,12 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
                           Navigator.pop(context);
                         }
                       },
-                      child: const Text('Submit'),
+                      child: const Text('Create'),
                     ),
                   ),
+                  ],
+
+                  
                 ],
               ),
             ),
@@ -231,8 +277,6 @@ void dispose(){
 
 }
 
-
-
 class IngredientInput extends StatefulWidget {
   final Ingredient ingredient;
   final VoidCallback onDelete;
@@ -252,14 +296,6 @@ class _IngredientInputState extends State<IngredientInput> {
     nameController = TextEditingController(text: widget.ingredient.name);
     quantityController = TextEditingController(text:widget.ingredient.quantity);
   }
-
-  @override
-  void dispose(){
-    nameController.dispose();
-    quantityController.dispose();
-    super.dispose();
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -309,5 +345,12 @@ class _IngredientInputState extends State<IngredientInput> {
       SizedBox(height: 10,),
       ],
     );
+  }
+
+  @override
+  void dispose(){
+    nameController.dispose();
+    quantityController.dispose();
+    super.dispose();
   }
 }

@@ -1,5 +1,8 @@
+import 'package:recipeorganizer/add_recipe_page.dart';
 import 'package:recipeorganizer/recipe.dart';
 import 'package:flutter/material.dart';
+
+import 'add_recipe_form.dart';
 
 class RecipeDetailPage extends StatefulWidget{
 
@@ -45,15 +48,40 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> with SingleTickerPr
 
       return Scaffold(
         appBar: AppBar(
+          iconTheme: const IconThemeData(color: Colors.white),
           backgroundColor: const Color(0xFF21808D),
           title: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(recipe.name, style: const TextStyle(fontWeight: FontWeight.bold)),
-              Text(recipe.type, style: const TextStyle(fontSize:14, color: Colors.white70 )),
+              Text(recipe.name, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+              Text(recipe.type, style: const TextStyle(fontSize:14, color: Color.fromARGB(255, 200, 236, 232))),
             ],
           ),
           centerTitle: true,
+          actions: [
+            IconButton(
+              icon: Icon(
+                recipe.isFavorite ? Icons.favorite : Icons.favorite_border,
+                color: recipe.isFavorite ? Colors.red : Colors.white,
+              ),
+              onPressed: () {
+                setState(() {
+                  recipe.isFavorite = !recipe.isFavorite;
+                });
+              },
+            ),
+            IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AddRecipePage(recipe: recipe),
+                  ),
+                );
+              }, 
+              icon: Icon(Icons.edit)
+            )
+          ],
         ),
         body: Column(
           children: [
@@ -200,6 +228,7 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> with SingleTickerPr
       itemBuilder: (context,i){
         final ingredient = recipe.ingredients[i];
         return Card(
+          color: ingredientChecks[i] ? Colors.grey[300]: Colors.white,
           margin: const EdgeInsets.symmetric(vertical: 8),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           child: CheckboxListTile(

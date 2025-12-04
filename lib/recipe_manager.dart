@@ -22,4 +22,12 @@ class RecipeManager extends ChangeNotifier{
     notifyListeners();
   }
 
+  void changeRecipe(Recipe oldRecipe,Recipe updatedRecipe){
+    int index = _recipes.indexOf(oldRecipe);
+    if(index != -1){
+      _recipes[index] = updatedRecipe;
+      notifyListeners();
+    }
+  }
+
 }

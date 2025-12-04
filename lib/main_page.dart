@@ -7,6 +7,7 @@ import 'package:recipeorganizer/recipe_detail_page.dart';
 import 'add_recipe_page.dart';
 import 'profile_page.dart';
 import 'data.dart';
+import 'recipe_list_page.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -64,7 +65,7 @@ String get _selectedType => chips[_selectedChip];
                     const SizedBox(height: 20),
                     _buildFeaturedSection(),
                     const SizedBox(height: 24),
-                    _buildSectionHeader(),
+                    _buildSectionHeader(context),
                     const SizedBox(height: 16),
                     _buildRecipeGrid(),
                   ],
@@ -198,7 +199,7 @@ String get _selectedType => chips[_selectedChip];
     );
   }
 
-  Widget _buildSectionHeader() {
+  Widget _buildSectionHeader(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -210,7 +211,17 @@ String get _selectedType => chips[_selectedChip];
             color: Color(0xFF134252),
           ),
         ),
-        const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
+        IconButton(
+          icon: Icon(Icons.arrow_forward_ios), 
+          iconSize: 16, 
+          color: Colors.grey, 
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const RecipeListPage()),
+            );
+          },
+        ),
       ],
     );
   }

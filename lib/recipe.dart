@@ -18,7 +18,6 @@ class Recipe{
   bool isFavorite;
 
   Recipe({
-
     required this.name,
     required this.type,
     required this.servings,

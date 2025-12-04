@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+
 import 'add_recipe_form.dart';
+import 'recipe.dart';
 
 class AddRecipePage extends StatefulWidget {
-  const AddRecipePage({Key? key}) : super(key: key);
+  const AddRecipePage({Key? key, this.recipe}) : super(key: key);
+
+  final Recipe? recipe;
 
   @override
   State<AddRecipePage> createState() => _AddRecipePageState();
@@ -28,7 +32,7 @@ class _AddRecipePageState extends State<AddRecipePage> {
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: AddRecipeForm(), 
+          child: AddRecipeForm(recipe: widget.recipe,), 
         ),
       ),
     );
