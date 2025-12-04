@@ -183,7 +183,7 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
                     TextFormField(
                       controller: instructionsC,
                       decoration: const InputDecoration(
-                        hintText: 'Enter the instructions of recipe',
+                        hintText: 'Enter the instructions of your recipe \nSeparate with Enter',
                       ),
                       maxLines: 4,
                     ),

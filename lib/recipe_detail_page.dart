@@ -66,6 +66,7 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> with SingleTickerPr
               ),
               child: TabBar(
                 controller: _tabController,
+                indicatorSize: TabBarIndicatorSize.tab,
                 indicator: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   color: const Color(0xFF21808D),
