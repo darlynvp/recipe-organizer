@@ -46,10 +46,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: Center(
                     child: Container(
                       width: double.infinity,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8.0),
-                        border: Border.all(color: Colors.teal, width: 2.0),
-                      ),
+
                       child: Column(
                         children: [
                           Text(
@@ -74,15 +71,16 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                 ),
+                Divider(
+                  thickness: 2,
+                  color: Colors.teal.shade400,
+                ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 10.0),
                   child: Container(
                     width: double.infinity,
                     padding: const EdgeInsets.all(16.0),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8.0),
-                      border: Border.all(color: Colors.teal, width: 2.0),
-                    ),
+
                     child: Column(
                       children: [
                         Padding(
@@ -137,7 +135,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         children: [
                                           IconButton(
                                             onPressed: () {
-                                              Provider.of<TypeManager>(context, listen:false).removeType(tag);
+                                              Provider.of<TypeManager>(context, listen:false).removeType(context, tag);
                                             }, 
                                             icon: Icon(Icons.delete)
                                           ),

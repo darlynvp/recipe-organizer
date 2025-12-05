@@ -51,7 +51,7 @@ class _TagFormPageState extends State<TagFormPage> {
       ),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Tag Form'),
+          title: const Text('Tag'),
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),

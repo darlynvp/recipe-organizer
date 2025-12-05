@@ -29,5 +29,13 @@ class RecipeManager extends ChangeNotifier{
       notifyListeners();
     }
   }
+  
+  void updateRecipeType(Recipe recipe, String newType) {
+    int index = _recipes.indexOf(recipe);
+    if (index != -1) {
+      _recipes[index].type = newType;
+      notifyListeners();
+    }
+  }
 
 }

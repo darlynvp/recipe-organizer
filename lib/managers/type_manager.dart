@@ -1,4 +1,9 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../recipe_manager.dart';
+import '../recipe.dart';
 
 class TypeManager extends ChangeNotifier {
 
@@ -24,8 +29,15 @@ class TypeManager extends ChangeNotifier {
       notifyListeners();
     }
   }
-  void removeType(String typeName) {
+  void removeType(BuildContext context, String typeName) {
     types.removeWhere((type) => type == typeName);
+
+    final List<Recipe> _recipes = context.read<RecipeManager>().recipes;
+    for (var recipe in _recipes) {
+      if (recipe.type == typeName) {
+        context.read<RecipeManager>().updateRecipeType(recipe, 'All');
+      }
+    }
     notifyListeners();
   }
 

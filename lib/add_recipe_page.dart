@@ -30,7 +30,7 @@ class _AddRecipePageState extends State<AddRecipePage> {
       ),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Add Recipe'),
+          title: const Text('Recipe'),
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),

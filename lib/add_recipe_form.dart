@@ -84,13 +84,6 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Your New Recipe...',
-                    style: TextStyle(
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
-                    ),
-                  ),
                   SizedBox(height: 16),
                   TextFormField(  
                     controller: nameC,                // Recipe name input
