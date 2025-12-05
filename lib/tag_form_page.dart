@@ -34,7 +34,11 @@ class _TagFormPageState extends State<TagFormPage> {
       data: Theme.of(context).copyWith(
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.teal,
-          primary: Colors.teal
+        ),
+        scaffoldBackgroundColor: Colors.white,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.teal,
+          foregroundColor: Colors.white,
         ),
         inputDecorationTheme: InputDecorationTheme(
           filled: true,
@@ -54,7 +58,7 @@ class _TagFormPageState extends State<TagFormPage> {
           title: const Text('Tag'),
         ),
         body: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.fromLTRB(16.0, 32.0, 16.0, 16.0),
           child: Column(
             children: [
               TextFormField(
@@ -65,6 +69,10 @@ class _TagFormPageState extends State<TagFormPage> {
               ),
               const SizedBox(height: 20),
               ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.teal.shade100,
+                  foregroundColor: Colors.black,
+                ),
                 onPressed: () {
                   String newTag = _tagController.text.trim();
                   if (newTag.isNotEmpty) {
