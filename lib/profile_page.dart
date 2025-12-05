@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'recipe_manager.dart';
 import 'package:provider/provider.dart';
 import 'tag_form_page.dart';
+import 'managers/type_manager.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -58,11 +59,14 @@ class _ProfilePageState extends State<ProfilePage> {
                               fontWeight: FontWeight.bold,
                             ),  
                           ),
-                          Text(
-                            'Recipes Stored',
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 8.0),
+                            child: Text(
+                              'Recipes Stored',
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ],
@@ -112,6 +116,49 @@ class _ProfilePageState extends State<ProfilePage> {
                                 child: Text('Add New Tag')
                               ),
                             ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: SizedBox(
+                            height: 300,
+                            child: ListView.builder(
+                              itemCount: context.watch<TypeManager>().types.length,
+                              itemBuilder: (context, index) {
+                                String tag = context.watch<TypeManager>().types[index];
+                                if (['All', 'Favorites'].contains(tag)) {
+                                  return SizedBox.shrink();
+                                } else {
+                                  return Card(
+                                    child: ListTile(
+                                      title: Text(tag),
+                                      trailing: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          IconButton(
+                                            onPressed: () {
+                                              Provider.of<TypeManager>(context, listen:false).removeType(tag);
+                                            }, 
+                                            icon: Icon(Icons.delete)
+                                          ),
+                                          IconButton(
+                                            icon: Icon(Icons.edit),
+                                            onPressed: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) => TagFormPage(tagName: tag),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                }
+                              },
+                            ),
                           ),
                         ),
                       ],
