@@ -35,7 +35,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Profile'),
+          title: const Text('Your Cookbook'),
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
