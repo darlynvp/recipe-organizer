@@ -10,7 +10,7 @@ class Ingredient{
 class Recipe{
 
   final String name;
-  final String type;
+  String type;
   final String servings;
   final String cookTime;
   final String instructions;

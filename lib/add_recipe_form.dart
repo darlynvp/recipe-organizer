@@ -53,6 +53,7 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
   Widget build(BuildContext context) {
 
     chips = context.watch<TypeManager>().types;
+    _selectedValue ??= chips.isNotEmpty ? chips[0] : null;
 
     return Theme(
       data: Theme.of(context).copyWith(
