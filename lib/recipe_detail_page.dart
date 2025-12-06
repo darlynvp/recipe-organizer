@@ -71,15 +71,26 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> with SingleTickerPr
               },
             ),
             IconButton(
-              onPressed: () {
-                Navigator.push(
+              onPressed: () async {
+                final updated = await Navigator.push<Recipe>(
                   context,
                   MaterialPageRoute(
                     builder: (context) => AddRecipePage(recipe: recipe),
                   ),
                 );
+
+                if(updated != null){
+                  setState(() {
+                    recipe.name= updated.name;
+                    recipe.type = updated.type;
+                    recipe.servings= updated.servings;
+                    recipe.cookTime= updated.cookTime;
+                    recipe.ingredients= updated.ingredients;
+                    recipe.instructions= updated.instructions;
+                  });
+                }
               }, 
-              icon: Icon(Icons.edit)
+              icon: const Icon(Icons.edit)
             )
           ],
         ),

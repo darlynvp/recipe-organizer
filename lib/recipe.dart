@@ -9,12 +9,12 @@ class Ingredient{
 
 class Recipe{
 
-  final String name;
+  String name;
   String type;
-  final String servings;
-  final String cookTime;
-  final String instructions;
-  final List<Ingredient> ingredients;
+  String servings;
+  String cookTime;
+  String instructions;
+  List<Ingredient> ingredients;
   bool isFavorite;
 
   Recipe({

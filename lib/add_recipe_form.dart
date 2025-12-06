@@ -224,7 +224,7 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
                               instructions: instructionsC.text,
                             );
                             Provider.of<RecipeManager>(context, listen:false).changeRecipe(widget.recipe!, newRecipe);
-                            Navigator.pop(context);
+                            Navigator.pop(context, newRecipe);
                           }
                         },
                         child: const Text('Save'),
