@@ -124,7 +124,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               itemCount: context.watch<TypeManager>().types.length,
                               itemBuilder: (context, index) {
                                 String tag = context.watch<TypeManager>().types[index];
-                                if (['All', 'Favorites'].contains(tag)) {
+                                if (['All'].contains(tag)) {
                                   return SizedBox.shrink();
                                 } else {
                                   return Card(

@@ -9,7 +9,6 @@ class TypeManager extends ChangeNotifier {
 
   final List<String> _defaultTypes = [
     'All',
-    'Favorites',
   ];
 
   late List<String> types = [];

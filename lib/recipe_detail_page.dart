@@ -60,17 +60,6 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> with SingleTickerPr
           centerTitle: true,
           actions: [
             IconButton(
-              icon: Icon(
-                recipe.isFavorite ? Icons.favorite : Icons.favorite_border,
-                color: recipe.isFavorite ? Colors.red : Colors.white,
-              ),
-              onPressed: () {
-                setState(() {
-                  recipe.isFavorite = !recipe.isFavorite;
-                });
-              },
-            ),
-            IconButton(
               onPressed: () async {
                 final updated = await Navigator.push<Recipe>(
                   context,

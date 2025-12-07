@@ -9,6 +9,7 @@ import 'profile_page.dart';
 import 'data.dart';
 import 'recipe_list_page.dart';
 import 'managers/type_manager.dart';
+import 'favorites_page.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -37,10 +38,6 @@ String get _selectedType => chips[_selectedChip];
     final type = _selectedType;
 
     if (type == "All") return true;
-     
-    if(type == 'Favorites'){
-      return recipe.isFavorite == true;
-    }
 
     return recipe.type == type;
   }
@@ -124,47 +121,40 @@ String get _selectedType => chips[_selectedChip];
   }
 
   Widget _buildFilterChips() {
-    return SizedBox(
-      height: 40,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: chips.length,
-        itemBuilder: (context, index) {
-          final isActive = _selectedChip == index;
-          return Padding(
-            padding: const EdgeInsets.only(right: 8),
-            child: FilterChip(
-              label: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (chips[index]== 'Favorites') const Text('❤️ '),
-                  Text(chips[index]),
-                ],
-              ),
-              selected: isActive,
-              // rebuild when chip changes
-              onSelected: (selected) {
-                setState(() => _selectedChip = index);
-              },
-              backgroundColor: Colors.white,
-              selectedColor: const Color(0xFF21808D),
-              labelStyle: TextStyle(
-                color: isActive ? Colors.white : const Color(0xFF134252),
-                fontWeight: FontWeight.w500,
-                fontSize: 12,
-              ),
-              side: BorderSide(
-                color: isActive
-                    ? const Color(0xFF21808D)
-                    : Colors.grey.withOpacity(0.3),
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+  return SizedBox(
+    height: 40,
+    child: ListView.builder(
+      scrollDirection: Axis.horizontal,
+      itemCount: chips.length,
+      itemBuilder: (context, index) {
+        final isActive = _selectedChip == index;
+        return Padding(
+          padding: const EdgeInsets.only(right: 8),
+          child: FilterChip(
+            label: Text(chips[index]),
+            selected: isActive,
+            onSelected: (selected) {
+              setState(() => _selectedChip = index);
+            },
+            backgroundColor: Colors.white,
+            selectedColor: const Color(0xFF21808D),
+            labelStyle: TextStyle(
+              color: isActive ? Colors.white : const Color(0xFF134252),
+              fontWeight: FontWeight.w500,
+              fontSize: 12,
             ),
-          );
-        },
-      ),
-    );
-  }
+            side: BorderSide(
+              color: isActive
+                  ? const Color(0xFF21808D)
+                  : Colors.grey.withOpacity(0.3),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          ),
+        );
+      },
+    ),
+  );
+}
 
   Widget _buildFeaturedSection() {
     return Container(
@@ -359,8 +349,9 @@ String get _selectedType => chips[_selectedChip];
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           _buildNavItem(Icons.home, 0),
-          _buildNavItem(Icons.add_circle_outline, 1),
-          _buildNavItem(Icons.person_outline, 2),
+          _buildNavItem(Icons.favorite, 1),
+          _buildNavItem(Icons.add_circle_outline, 2),
+          _buildNavItem(Icons.person_outline, 3),
         ],
       ),
     );
@@ -374,7 +365,7 @@ String get _selectedType => chips[_selectedChip];
         if (index == 1) {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (_) => const AddRecipePage()),
+            MaterialPageRoute(builder: (_) => const FavoritesPage()),
           ).then(
             (_) => setState(() {
               _selectedNav = 0;
@@ -383,24 +374,33 @@ String get _selectedType => chips[_selectedChip];
         } else if (index == 2) {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (_) => const ProfilePage()),
+            MaterialPageRoute(builder: (_) => const AddRecipePage()),
           ).then(
             (_) => setState(() {
               _selectedNav = 0;
             }),
           );
+          }else if(index ==3){
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const ProfilePage()),
+            ).then(
+              (_) => setState(() {
+                _selectedNav=0;
+              }),
+            );
           index = 0;
-        } else {
-          setState(() => _selectedNav = index);
-        }
-      },
-      child: Icon(
-        icon,
-        size: 28,
-        color: isSelected ? const Color(0xFF64FFDA) : Colors.white,
-      ),
-    );
-  }
+          } else {
+           setState(() => _selectedNav = index);
+          }
+        },
+        child: Icon(
+          icon,
+          size: 28,
+         color: isSelected ? const Color(0xFF64FFDA) : Colors.white,
+        ),
+      );
+    }
 
   Widget _buildSearchResults() {
     if(!_isSearchActive) return const SizedBox.shrink();
