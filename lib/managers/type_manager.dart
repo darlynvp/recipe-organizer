@@ -40,13 +40,23 @@ class TypeManager extends ChangeNotifier {
     notifyListeners();
   }
 
-  void changeType(String oldName, String newName) {
-    for (var type in types) {
-      if (type == oldName) {
-        type = newName;
-        notifyListeners();
+  void changeType(BuildContext context, String oldName, String newName) {
+
+    final List<Recipe> _recipes =  context.read<RecipeManager>().recipes;
+
+    for (int i = 0; i < types.length; i++) {
+      if (types[i] == oldName) {
+        types[i] = newName;
         break;
       }
     }
+    notifyListeners();
+
+    for (var recipe in _recipes) {
+      if (recipe.type == oldName) {
+        context.read<RecipeManager>().updateRecipeType(recipe, newName);
+      }
+    }
+
   }
 }
