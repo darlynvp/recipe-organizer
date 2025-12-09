@@ -47,7 +47,8 @@ class _RecipeListPageState extends State<RecipeListPage> {
                     children: [
                       if (recipe.isFavorite)
                         const Icon(Icons.favorite, color: Colors.red),
-                      Icon(Icons.arrow_forward_ios, size: 16)
+                      SizedBox(width: 8),
+                      Icon(Icons.arrow_forward_ios, size: 16),
                     ],
                   ),
 

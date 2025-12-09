@@ -202,7 +202,7 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
                                     const EdgeInsets.fromLTRB(7, 0, 10, 0),
                               ),
                               child: const Row(
-                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Icon(Icons.add),
                                   SizedBox(width: 4),
