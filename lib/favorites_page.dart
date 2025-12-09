@@ -24,23 +24,32 @@ class FavoritesPage extends StatelessWidget{
               return const Center(child: Text("No Favorite recipes"));
             }
 
-            return ListView.builder(
-              itemCount: favorites.length,
-              itemBuilder: (context ,index){
-                final recipe = favorites[index];
-                return ListTile(
-                  title: Text(recipe.name),
-                  subtitle: Text(recipe.type),
-                  onTap: (){
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => RecipeDetailPage(recipe:  recipe),
-                      ),
-                    );
-                  },
-                );
-              },
+            return Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: ListView.builder(
+                itemCount: favorites.length,
+                itemBuilder: (context ,index){
+                  final recipe = favorites[index];
+                  return Card(
+                    color: Colors.white,
+                    margin: EdgeInsets.all(8.0),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    child: ListTile(
+                      title: Text(recipe.name),
+                      subtitle: Text(recipe.type),
+                      trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                      onTap: (){
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => RecipeDetailPage(recipe:  recipe),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                },
+              ),
             );
         },
       )

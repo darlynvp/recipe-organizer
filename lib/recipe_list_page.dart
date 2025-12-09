@@ -25,7 +25,7 @@ class _RecipeListPageState extends State<RecipeListPage> {
         title: const Text('All Your Recipes'),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.only(top: 8.0),
         child: Container(
           constraints: const BoxConstraints(maxHeight: 200),
           margin: const EdgeInsets.only(top: 4),
