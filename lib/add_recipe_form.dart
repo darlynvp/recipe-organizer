@@ -174,6 +174,7 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
 
                         ...ingredients.map(
                           (ingredient) => IngredientInput(
+                            key: ObjectKey(ingredient),
                             ingredient: ingredient,
                             onDelete: () {
                               if (ingredients.length <= 1) return;
