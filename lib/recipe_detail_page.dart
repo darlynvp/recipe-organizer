@@ -197,6 +197,8 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> with SingleTickerPr
   }
   
   Widget _instructionsTab(List<String> steps) {
+    instructionChecks = List.generate(steps.length, (index) => instructionChecks.length > index ? instructionChecks[index] : false);
+
     return ListView.builder(
       padding: const EdgeInsets.symmetric(vertical: 24, horizontal:24),
       itemCount: steps.length,

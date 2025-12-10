@@ -13,6 +13,8 @@ class RecipeManager extends ChangeNotifier{
 
   void addRecipe(Recipe recipe){
 
+    recipe.instructions = recipe.instructions.trimRight();
+
     _recipes.add(recipe);
     notifyListeners();
   }

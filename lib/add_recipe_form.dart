@@ -39,11 +39,11 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
   void initState() {
     super.initState();
 
+    chips = context.read<TypeManager>().types;
     nameC = TextEditingController(text: widget.recipe?.name ?? '');
     servingsC = TextEditingController(text: widget.recipe?.servings ?? '');
     cookTimeC = TextEditingController(text: widget.recipe?.cookTime ?? '');
     instructionsC = TextEditingController(text: widget.recipe?.instructions ?? '');
-    _selectedValue = widget.recipe?.type ?? chips.firstOrNull;
 
     if (widget.recipe != null) {
       ingredients = widget.recipe!.ingredients
@@ -60,6 +60,7 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
   @override
   Widget build(BuildContext context) {
     chips = context.watch<TypeManager>().types;
+    _selectedValue = widget.recipe?.type ?? chips.firstOrNull;
 
     return Theme(
       data: Theme.of(context).copyWith(
