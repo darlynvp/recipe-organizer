@@ -203,6 +203,11 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> with SingleTickerPr
       padding: const EdgeInsets.symmetric(vertical: 24, horizontal:24),
       itemCount: steps.length,
       itemBuilder: (context, i){
+
+        if (steps[i].trim().isEmpty || RegExp(r'^\s*$').hasMatch(steps[i])) {
+          return const SizedBox.shrink(); // Skip empty instructions
+        }
+
         final isChecked = instructionChecks[i];
         return Card(
           color: isChecked ? Colors.grey[300]: Colors.white,
