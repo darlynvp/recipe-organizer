@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../recipe_manager.dart';
+import 'recipe_manager.dart';
 import '../recipe.dart';
 
 class TypeManager extends ChangeNotifier {

@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:recipeorganizer/recipe.dart';
-import 'package:recipeorganizer/recipe_manager.dart';
+import 'package:recipeorganizer/managers/recipe_manager.dart';
 
-import 'data.dart';
 import 'managers/type_manager.dart';
 
 class AddRecipeForm extends StatefulWidget {

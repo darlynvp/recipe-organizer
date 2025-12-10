@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:recipeorganizer/data.dart';
 
-import 'recipe_manager.dart';
+import 'managers/recipe_manager.dart';
 import 'recipe_detail_page.dart';
 import 'recipe.dart';
 

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'recipe_manager.dart';
-import 'recipe.dart';
+import 'managers/recipe_manager.dart';
 import 'recipe_detail_page.dart';
 
 class FavoritesPage extends StatelessWidget{

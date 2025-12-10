@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recipeorganizer/recipe.dart';
-import 'package:recipeorganizer/recipe_manager.dart';
+import 'package:recipeorganizer/managers/recipe_manager.dart';
 import 'package:recipeorganizer/recipe_detail_page.dart';
 
 import 'add_recipe_page.dart';
 import 'profile_page.dart';
-import 'data.dart';
 import 'recipe_list_page.dart';
 import 'managers/type_manager.dart';
 import 'favorites_page.dart';

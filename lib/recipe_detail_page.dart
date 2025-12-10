@@ -1,8 +1,8 @@
+import 'package:provider/provider.dart';
 import 'package:recipeorganizer/add_recipe_page.dart';
 import 'package:recipeorganizer/recipe.dart';
 import 'package:flutter/material.dart';
-
-import 'add_recipe_form.dart';
+import 'package:recipeorganizer/managers/recipe_manager.dart';
 
 class RecipeDetailPage extends StatefulWidget{
 
@@ -59,6 +59,13 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> with SingleTickerPr
           ),
           centerTitle: true,
           actions: [
+            IconButton(
+              onPressed: () {
+                context.read<RecipeManager>().removeRecipe(recipe);
+                Navigator.pop(context);
+              },
+              icon: Icon(Icons.delete_outline),
+            ),
             IconButton(
               onPressed: () async {
                 final updated = await Navigator.push<Recipe>(
@@ -229,6 +236,8 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> with SingleTickerPr
   }
   
   Widget _ingredientsTab(Recipe recipe) {
+    ingredientChecks = List.generate(recipe.ingredients.length, (index) => ingredientChecks.length > index ? ingredientChecks[index] : false);
+
     return ListView.builder(
       padding: const EdgeInsets.symmetric(vertical:24, horizontal: 24 ),
       itemCount: recipe.ingredients.length,

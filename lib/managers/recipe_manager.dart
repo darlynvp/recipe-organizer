@@ -3,7 +3,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:recipeorganizer/recipe.dart';
-import 'package:provider/provider.dart';
 
 class RecipeManager extends ChangeNotifier{
 
@@ -18,6 +17,11 @@ class RecipeManager extends ChangeNotifier{
     _recipes.add(recipe);
     notifyListeners();
   }
+
+  void removeRecipe(Recipe recipe){
+    _recipes.remove(recipe);
+    notifyListeners();
+  } 
 
   void toggleFavorite(Recipe recipe){
     recipe.isFavorite = !recipe.isFavorite;

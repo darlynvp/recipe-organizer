@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'recipe_manager.dart';
+import 'managers/recipe_manager.dart';
 import 'package:provider/provider.dart';
-import 'tag_form_page.dart';
 import 'managers/type_manager.dart';
 
 class ProfilePage extends StatefulWidget {
