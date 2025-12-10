@@ -44,6 +44,7 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
     servingsC = TextEditingController(text: widget.recipe?.servings ?? '');
     cookTimeC = TextEditingController(text: widget.recipe?.cookTime ?? '');
     instructionsC = TextEditingController(text: widget.recipe?.instructions ?? '');
+    _selectedValue = widget.recipe?.type ?? chips.first;
 
     if (widget.recipe != null) {
       ingredients = widget.recipe!.ingredients
@@ -60,7 +61,6 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
   @override
   Widget build(BuildContext context) {
     chips = context.watch<TypeManager>().types;
-    _selectedValue = widget.recipe?.type ?? chips.firstOrNull;
 
     return Theme(
       data: Theme.of(context).copyWith(
@@ -151,7 +151,7 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
                         .toList(),
                     onChanged: (value) {
                       setState(() {
-                        _selectedValue = value as String?;
+                        _selectedValue = value;
                       });
                     },
                   ),
@@ -247,7 +247,7 @@ class _AddRecipeFormState extends State<AddRecipeForm> {
 
                         final newRecipe = Recipe(
                           name: nameC.text,
-                          type: _selectedValue ?? '',
+                          type: _selectedValue ?? chips.first,
                           servings: servingsC.text,
                           cookTime: cookTimeC.text,
                           ingredients: ingredients,
